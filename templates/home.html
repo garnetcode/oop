@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}home{% endblock title %}
+{% block body %}
+
+
+<legend class="border-bottom mb-4">
+    <div class="row">
+        <div class="col-5">
+
+        </div>
+        <div class="col-4">
+            <h2>News</h2>
+        </div>
+    </div>
+</legend>
+{% for post in posts %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <img src="{{ post.scene }}" class="rounded-circle" alt="site logo" width="120" height="120">
+            <strong><h4>{{ post.title }}</h4></strong>
+
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+                <p>{{ post.content }}</p>
+                <footer class="blockquote-footer">
+                    <strong>{{ post.author }} </strong><cite title="Source Title">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ~ {{ post.date }}</cite></footer>
+            </blockquote>
+            <div class="container"  id="myContent" >
+                <form method="POST" class="bg-transparent">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|crispy }}
+                    </fieldset>
+                    Votes : {{ post.votes }}
+                    <div class="form-group">
+                        <button class="btn btn-info" type="submit" name="upVote" value="{{ post.title }}">Up-vote</button>
+                        <button class="btn btn-info" type="submit" name="downVote" value="{{ post.title }}">Down-vote</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <hr>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock body %}
